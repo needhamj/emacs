@@ -5,6 +5,21 @@
 ;; sudo pip install ropemacs ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; set path for flake8
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/"))
+(elpy-enable)
+;; (use-package elpy
+;;   :ensure t
+;;   :init
+;;   (elpy-enable))
+
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 (setq exec-path (append exec-path '("/usr/local/bin")))
 ;; set up el-get
@@ -35,13 +50,15 @@
 (ac-config-default)
 (global-auto-complete-mode t)
 ;; pymacs
-(add-to-list 'load-path "~/.emacs.d/el-get/pymacs")
+;;(add-to-list 'load-path "~/.emacs.d/el-get/pymacs")
 (autoload 'pymacs-apply "pymacs")
 (autoload 'pymacs-call "pymacs")
 (autoload 'pymacs-eval "pymacs" nil t)
 (autoload 'pymacs-exec "pymacs" nil t)
 (autoload 'pymacs-load "pymacs" nil t)
 (autoload 'pymacs-autoload "pymacs")
+(add-to-list 'load-path "~/.emacs.d/el-get/python-mode")
+
 ;; ropemacs -
 (require 'pymacs)
 (pymacs-load "ropemacs" "rope-")
@@ -83,6 +100,7 @@ global-fci-mode fci-mode (lambda () (fci-mode 1)))
  '(column-number-mode t)
  '(cua-mode t nil (cua-base))
  '(inhibit-startup-screen t)
+ '(package-selected-packages (quote (yasnippet let-alist)))
  '(show-paren-mode t)
  '(size-indication-mode t))
 (custom-set-faces
@@ -323,3 +341,24 @@ output))
 (setq cua-enable-cua-keys nil)
 (cua-mode)
 (put 'scroll-left 'disabled nil)
+
+(add-to-list 'load-path "~/.emacs.d/ttl-mode")
+(autoload 'ttl-mode "ttl-mode" "Major mode for OWL or Turtle files" t)
+(add-hook 'ttl-mode-hook    ; Turn on font lock when in ttl mode
+          'turn-on-font-lock)
+(add-to-list 'load-path "~/.emacs.d/kotlin-mode")
+(autoload 'kotlin-mode "kotlin-mode" "Major mode for kotlin files" t)
+(add-hook 'kotlin-mode-hook    ; Turn on font lock when in kotlin mode
+          'turn-on-font-lock)
+(setq auto-mode-alist
+      (append
+       (list
+        '("\\.n3" . ttl-mode)
+        '("\\.ttl" . ttl-mode))
+       auto-mode-alist))
+(setq auto-mode-alist
+      (append
+       (list
+        '("\\.yaml" . yaml-mode)
+        '("\\.yml" . yaml-mode))
+       auto-mode-alist))
